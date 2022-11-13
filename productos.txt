@@ -1,9 +1,14 @@
-[]  {
+[
+  {
     "Producto1": 1,
     "id": 1
   },
   {
-    "Producto2": 2,
-    "id": 2
+    "Producto1": 3,
+    "id": 3
+  },
+  {
+    "Producto1": 4,
+    "id": 4
   }
 ]

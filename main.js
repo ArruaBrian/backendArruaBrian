@@ -72,7 +72,69 @@ contenedor.writeFile([
     Producto1: 1,
     id: 1,
   },
+  {
+    Producto1: 3,
+    id: 3,
+  },
+  {
+    Producto1: 4,
+    id: 4,
+  },
+  
+
 ]);
-contenedor.save({ Producto2: 2 });
-contenedor.getById(1).then((data) => console.log(data));
-contenedor.deleteById(1)
+contenedor.getAll().then(res => console.log(res))
+
+
+// Creacion del servidor
+
+const express = require('express')
+
+const app = express()
+
+app.get('/', (req, res)=>{
+
+  res.send('Este es el inicio')
+
+})
+
+app.get('/productos', (req, res)=>{
+
+  const productos = async ()=>{
+
+    const resultado = await contenedor.getAll()
+
+    res.send(resultado)
+
+  }
+
+  productos()
+
+})
+
+app.get('/productoRandom', (req, res)=>{
+
+  const productos = async ()=>{
+
+    const resultado = await contenedor.getAll()
+
+    const random = Math.floor(Math.random() * resultado.length);
+
+    res.send(resultado[random])
+
+  }
+
+  productos()
+
+})
+
+const server = app.listen(8080, ()=>{
+
+
+  console.log('Servidor escuchando en el 8080')
+
+
+})
+
+ 
+
