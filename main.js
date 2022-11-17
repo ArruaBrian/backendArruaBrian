@@ -89,52 +89,41 @@ contenedor.getAll().then(res => console.log(res))
 // Creacion del servidor
 
 const express = require('express')
-
+const { Router } = express
 const app = express()
+const productos = new Router()
+const PORT = 8080
 
-app.get('/', (req, res)=>{
 
-  res.send('Este es el inicio')
+app.use(express.static("public"))
 
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use("/api/productos", productos)
+
+
+
+productos.get("/", async (req, res) => {
+    res.json(await contenedor.getAll())
 })
 
-app.get('/productos', (req, res)=>{
-
-  const productos = async ()=>{
-
-    const resultado = await contenedor.getAll()
-
-    res.send(resultado)
-
-  }
-
-  productos()
-
+productos.get("/:id", async (req, res) => {
+    const id = req.params.id
+    res.json(await contenedor.getById(parseInt(id)))
 })
 
-app.get('/productoRandom', (req, res)=>{
-
-  const productos = async ()=>{
-
-    const resultado = await contenedor.getAll()
-
-    const random = Math.floor(Math.random() * resultado.length);
-
-    res.send(resultado[random])
-
-  }
-
-  productos()
-
+productos.post("/", async (req, res) => { 
+    res.json(await contenedor.save(req.body))
 })
 
-const server = app.listen(8080, ()=>{
+productos.delete("/:id", async (req, res) => {
+    const id = req.params.id
+    res.json(await contenedor.deleteById(parseInt(id)))
+})
 
 
-  console.log('Servidor escuchando en el 8080')
+const server = app.listen(PORT,()=>{
+    console.log("perfecto")
 
 
 })
-
- 
-
